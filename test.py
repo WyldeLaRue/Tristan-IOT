@@ -4,9 +4,9 @@
 # Direct port of the Arduino NeoPixel library strandtest example.  Showcases
 # various animations on a strip of NeoPixels.
 import time
-
+import random
 from neopixel import *
-
+import colorsys
 
 # LED strip configuration:
 LED_COUNT      = 300       # Number of LED pixels.
@@ -28,6 +28,31 @@ def colorWipe(strip, color, wait_ms=50):
 		strip.show()
 		time.sleep(wait_ms/1000.0)
 
+# Utility 
+def setAll(strip, color, wait_s=1):
+	for i in range(strip.numPixels()):
+		strip.setPixelColor(i, color)
+	strip.show()
+	time.sleep(wait_s)
+
+# def random
+
+def randomColor():
+	while True:
+		rand = random.random()
+		hsv = "test"
+		yield Color(green, red, blue)
+
+
+def chaos(strip, wait_ms=200):
+	colorGen = randomColor()
+	for i in range(strip.numPixels()):
+		color = colorGen.next()
+		strip.setPixelColor(i, color)
+	strip.show()
+	time.sleep(wait_ms/1000)
+
+
 def theaterChase(strip, color, wait_ms=50, iterations=10):
 	"""Movie theater light style chaser animation."""
 	for j in range(iterations):
@@ -38,6 +63,18 @@ def theaterChase(strip, color, wait_ms=50, iterations=10):
 			time.sleep(wait_ms/1000.0)
 			for i in range(0, strip.numPixels(), 3):
 				strip.setPixelColor(i+q, 0)
+
+def theaterChase2(strip, color, color2, wait_ms=50, iterations=10):
+	"""Movie theater light style chaser animation."""
+	for j in range(iterations):
+		for q in range(3):
+			for i in range(0, strip.numPixels(), 3):
+				strip.setPixelColor(i+q, color)
+			strip.show()
+			time.sleep(wait_ms/1000.0)
+			for i in range(0, strip.numPixels(), 3):
+				strip.setPixelColor(i+q, color2)
+
 
 def wheel(pos):
 	"""Generate rainbow colors across 0-255 positions."""
@@ -88,20 +125,16 @@ if __name__ == '__main__':
 	print ('Press Ctrl-C to quit.')
 	while True:
 		# Color wipe animations.
-		# colorWipe(strip, Color(255, 0, 0))  # Red wipe
-		# colorWipe(strip, Color(0, 255, 0))  # Blue wipe
-		# colorWipe(strip, Color(0, 0, 255))  # Green wipe
-		# colorWipe(strip, Color(0, 0, 0, 255))  # White wipe
+		#setAll(strip, Color(0, 255, 10, 0))  # Red wipe
+		#setAll(strip, Color(15, 255, 75, 0))
+		#setAll(strip, Color(95, 24, 24, 0))  # Blue wipe
 		# colorWipe(strip, Color(255, 255, 255))  # Composite White wipe
-		#colorWipe(strip, Color(255, 255, 255, 255))  # Composite White + White LED wipe
-		# Theater chase animations.
-		# theaterChase(strip, Color(127, 0, 0))  # Red theater chase
-		# theaterChase(strip, Color(0, 127, 0))  # Green theater chase
-		# theaterChase(strip, Color(0, 0, 127))  # Blue theater chase
-		# theaterChase(strip, Color(0, 0, 0, 127))  # White theater chase
-		# theaterChase(strip, Color(127, 127, 127, 0))  # Composite White theater chase
-		# theaterChase(strip, Color(127, 127, 127, 127))  # Composite White + White theater chase
-		# Rainbow animations.
+		# colorWipe(strip, Color(255, 255, 255, 255))  # Composite White + White LED wipe
+		# # Theater chase animations.
+		# # Rainbow animations.
 		rainbow(strip)
+		
 		#rainbowCycle(strip)
-		# theaterChaseRainbow(strip)
+		#theaterChaseRainbow(strip)
+		#chaos(strip)
+
