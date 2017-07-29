@@ -1,5 +1,5 @@
 from . import shared
-from . import LightController as lights
+from . import lights as lights
 
 
 def debugMain():

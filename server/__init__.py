@@ -16,4 +16,4 @@ class Object:
 
 testObject = Object()
 
-from .homepage import hello
+from .homepage import endpoints
