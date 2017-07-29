@@ -1,12 +1,12 @@
 import time
-import patterns
+from . import patterns
 import os
 import signal
 from multiprocessing import Process
 from neopixel import *
-from patterns import rgbColor, hsvColor
+from .patterns import rgbColor, hsvColor
 # import tests
-import shared
+from . import shared
 
 # Strip Default Config 
 LED_COUNT      = 300       # Number of LED pixels.
@@ -35,7 +35,7 @@ patternMap = {'rainbowCycle': PatternInfo('rainbowCycle', patterns.rainbowCycle)
 			 }
 
 def changePattern(targetPattern):
-	if targetPattern not in patternMap.keys():
+	if targetPattern not in list(patternMap.keys()):
 		return False
 
 	if patternMap[targetPattern].status == "active":
@@ -59,26 +59,26 @@ def changePattern(targetPattern):
 		try:
 			os.kill(p.pid, signal.SIGCONT)
 		except Exception as e:
-			print 'issues with thread deletion'
+			print('issues with thread deletion')
 			return 'Error' 
 		else:
 			p.status = True
 	elif p.pid == None and p.process == None:
-		print 'Creating process for pattern:', p.patternId, p.pid, p.status
+		print('Creating process for pattern:', p.patternId, p.pid, p.status)
 		p.process = Process(target=patternloop, name=targetPattern, args=(p.patternFunction, strip))
 		p.status = 'pending'
 		p.process.start()
 		p.pid = p.process.pid
 		p.status = 'active'
-		print 'Created process for pattern:', p.patternId, p.pid, p.status
+		print('Created process for pattern:', p.patternId, p.pid, p.status)
 
 
 
 def patternloop(patternFunc, strip):
-	print 'module name:', __name__
-	print 'parent process:', os.getppid()
-	print 'process id:', os.getpid()
-	print 'group id:', os.getpgrp()
+	print('module name:', __name__)
+	print('parent process:', os.getppid())
+	print('process id:', os.getpid())
+	print('group id:', os.getpgrp())
 
 	while True:
 		patternFunc(strip)
@@ -97,14 +97,14 @@ class LightController:
 		if not self.active:
 			self.process = Process(target=self.mainloop)
 			self.process.start()
-			print "thread created"
+			print("thread created")
 
 	def mainloop(self):
 		if not self.active:
-			print 'module name:', __name__
+			print('module name:', __name__)
 			if hasattr(os, 'getppid'):  # only available on Unix
-			    print 'parent process:', os.getppid()
-			print 'process id:', os.getpid()
+			    print('parent process:', os.getppid())
+			print('process id:', os.getpid())
 
 
 			self.active = True
@@ -114,14 +114,14 @@ class LightController:
 	def setBrightness(self, brightness):
 		if 0 <= brightness and brightness <= 100:
 			shared.brightness.set(int(brightness))
-			print("Brightness set to: ", brightness)
+			print(("Brightness set to: ", brightness))
 		else:
 			print("brightness out of bounds")
 
 	def setSpeed(self, speed):
 		if 0 <= speed and speed <= 100:
 			shared.speed.set(int(speed))
-			print("Speed set to: ", speed)
+			print(("Speed set to: ", speed))
 		else:
 			print("speed out of bounds")
 

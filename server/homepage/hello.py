@@ -11,7 +11,7 @@ from server.tests import debugMain
 def hello_world():
     testObject.color = "blue"
     testObject.value += 1
-    print "hello"
+    print("hello")
     return 'Hello, World!'
 
 @app.route('/start')
@@ -50,7 +50,7 @@ def rainbowCycle():
 
 @app.route("/api/lights/patterns/debug")
 def lcdebug():
-    print 'DEBUGGING:'
+    print('DEBUGGING:')
     debugMain()
     return 'fuck'
 
@@ -82,21 +82,19 @@ def manageOutlets():
                     '2': 87491,
                     '3': 87811,
                     '4': 89347,
-                    '5': 95491
-                  }
+                    '5': 95491}
         freqOFF = { '1': 87356,
                     '2': 87500,
                     '3': 87820,
                     '4': 89356,
-                    '5': 95500
-                  }
+                    '5': 95500}
         if state == "ON":
             signature = freqON[outletId]
-            print("Turning on " + outletId)
+            print(("Turning on " + outletId))
             subprocess.call(('/var/www/rfoutlet/codesend %d -l 180 -p 0' % signature), shell=True)
             return "toggle success"
         else:
             signature = freqOFF[outletId]
-            print("Turning off " + outletId)
+            print(("Turning off " + outletId))
             subprocess.call(('/var/www/rfoutlet/codesend %d -l 180 -p 0' % signature), shell=True)
             return "toggle success"

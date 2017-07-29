@@ -1,6 +1,6 @@
 import time
 import colorsys
-import shared
+from . import shared
 from neopixel import * 
 
 stripBrightness = 0.5
@@ -13,6 +13,7 @@ def statusCheck(function, controller): # asks controller if function should cont
 
 def wheel(pos):
 	"""Generate rainbow colors across 0-255 positions."""
+	pos = pos % 256
 	if pos < 85:
 		return rgbColor(pos * 3, 255 - pos * 3, 0)
 	elif pos < 170:
@@ -24,7 +25,11 @@ def wheel(pos):
 
 def rgbColor(red, green, blue, white=0):
 	brightness = shared.brightness.value/100.0
-	return Color(int(green*brightness), int(red*brightness), int(blue*brightness), int(white*brightness))
+	red = int(red*brightness) % 256
+	green = int(green*brightness) % 256
+	blue = int(blue*brightness) % 256
+	white = int(white*brightness) % 256
+	return Color(green, red, blue, white)
 
 # 0-1 for hue, 0-1 for saturation, 0-1 for brightness, 0-1 for white
 def hsvColor(hue, saturation, brightness, white=0):
@@ -44,7 +49,7 @@ def rainbow(strip, wait_ms=100, iterations=1):
 	
 	for j in range(256*iterations):
 		for i in range(strip.numPixels()):
-			strip.setPixelColor(i, wheel((j) & 255))
+			strip.setPixelColor(i, wheel(j))
 		strip.show()
 
 		wait = (1-shared.speed.value/100.0)*minSpeed + maxSpeed
@@ -56,7 +61,7 @@ def rainbowCycle(strip, wait_ms=20, iterations=5):
 	minSpeed = 200
 	for j in range(256*iterations):
 		for i in range(strip.numPixels()):
-			strip.setPixelColor(i, wheel(((i * 256 / strip.numPixels()) + j) & 255))
+			strip.setPixelColor(i, wheel((i * 256 / strip.numPixels()) + j))
 		strip.show()
 		wait = (1-shared.speed.value/100.0)*(minSpeed-maxSpeed) + maxSpeed
 		time.sleep(wait/1000)

@@ -10,10 +10,10 @@ class Object:
 		self.status = "active"
 
 	def info(self):
-		print "color: ", self.color
-		print "value: ", self.value
-		print "status: ", self.status 
+		print("color: ", self.color)
+		print("value: ", self.value)
+		print("status: ", self.status) 
 
 testObject = Object()
 
-from homepage import hello
+from .homepage import hello
