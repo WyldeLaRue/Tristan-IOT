@@ -1,8 +1,11 @@
 from server import app, testObject
 from server.LightController import lc
+import server.LightController as lights
 import server.patterns as patterns
+from server.patterns import rgbColor, hsvColor
 from flask import render_template, request
 import subprocess
+from server.tests import debugMain
 
 @app.route('/hello')
 def hello_world():
@@ -13,37 +16,61 @@ def hello_world():
 
 @app.route('/start')
 def start():
-    lc.createThread()
+    pass
     return "Created thread"
+
 @app.route('/')
 def homepage():
     variable = "ayy lmao"
     return render_template('homepage/templates/homepageTemplate.html', variable=variable)
 
 @app.route('/debug')
-def debug():
+def debugPage():
     #lc.createThread()
     testObject.info()
     variable = "debug"
     return render_template('homepage/templates/admin.html')
 
-
-@app.route("/api/patterns/strobe")
+@app.route("/api/lights/patterns/strobe")
 def strobe():
     lc.currentPattern = patterns.strobe
     return "success"
 
-@app.route("/api/patterns/rainbow")
+@app.route("/api/lights/patterns/rainbow")
 def rainbow():
-    print("rainbow")
-    lc.currentPattern = patterns.rainbow
+    print('rainbow')
+    lights.changePattern('rainbow')
     return "success"
 
-@app.route("/api/patterns/rainbowCycle")
+@app.route("/api/lights/patterns/rainbowCycle")
 def rainbowCycle():
     print("rainbowCycle")
-    lc.currentPattern = patterns.rainbowCycle
+    lights.changePattern('rainbowCycle')
     return "success"
+
+@app.route("/api/lights/patterns/debug")
+def lcdebug():
+    print 'DEBUGGING:'
+    debugMain()
+    return 'fuck'
+
+@app.route("/process")
+def processTest():
+    lc.processCreate()
+    return "oh boy"
+
+
+
+@app.route('/api/lights/setAttribute', methods=['POST'])
+def setAttribute():
+    if request.method == 'POST':
+        value = request.form['value']
+        attribute = request.form['attribute']
+        if attribute == "brightness":
+            lc.setBrightness(float(value))
+        elif attribute == "speed":
+            lc.setSpeed(float(value))
+        return "success"
 
 @app.route('/api/outlets/toggle', methods=['POST'])
 def manageOutlets():

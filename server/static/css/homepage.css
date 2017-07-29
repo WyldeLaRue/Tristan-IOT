@@ -1,0 +1,120 @@
+
+
+
+ul.navbar {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: black;
+	position: fixed;
+	top: 0;
+	width: 100%;
+}
+
+ul.navbar li {
+	float: left;
+}
+
+ul.navbar li a {
+	display: block;
+	color: #DDDDDD;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+ul.navbar li a:hover {
+	color: white;
+}
+
+
+.center {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #FFEAF1;
+	top: 0;
+	text-align: center
+}
+
+h1 {
+	font-weight: 500;
+	font-size: 36px;
+	line-height: 39.6px;
+}
+
+.sliders {
+	margin: 0 auto;
+	text-align: right;
+	font-size: 16px;
+	font-weight: 400;
+}
+
+.sliders input {
+	margin-top: 5px;
+	width: 300px;
+}
+
+.sliderValue {
+	margin: 0 0;
+	width: 27px;
+	text-align: left;
+}
+
+.title{
+	position: relative;
+	min-height: 1px;
+	padding-right: 15px;
+	padding-left: 15px;
+	width: 100%;
+}
+
+body {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	line-height: 1.42857143;
+	color: #333;
+	background-color: #fff;
+}
+
+.simple-buttons button {
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.42857143;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-radius: 4px;
+}
+
+.simple-buttons button:hover {
+	background-color: grey;
+}
+
+.outletController button {
+	padding: 6px 12px;
+	margin-bottom: 0;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 1.42857143;
+	text-align: center;
+	background-color: #68FCFF;
+	white-space: nowrap;
+	vertical-align: middle;
+	cursor: pointer;
+	border: 1px solid transparent;
+	border-radius: 4px;
+
+	transition: background-color 0.3s /* Safari */
+}
+
+.outletController button:hover {
+	background-color: #5CE0E2
+}
+
