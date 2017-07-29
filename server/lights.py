@@ -38,8 +38,9 @@ def addPattern(pattern):
         	patternFunc = getattr(patterns, pattern)
         	patternMap[pattern] = PatternInfo(pattern, patternFunc)
 
-        changePattern(patternFunc)
-   		return "Success"
+		changePattern(patternFunc)
+		return "Success"
+		
    	else:
    		return "Pattern not enabled."
 
