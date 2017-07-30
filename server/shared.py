@@ -19,3 +19,6 @@ class Counter(object):
 
 speed = Counter()
 brightness = Counter()
+generic1 = Counter()
+generic2 = Counter()
+generic3 = Counter()

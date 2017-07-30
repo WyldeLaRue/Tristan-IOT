@@ -31,10 +31,10 @@ ul.navbar li a:hover {
 
 .center {
 	width: 100%;
-	margin: 0;
+	margin: 0 auto;
 	padding: 0;
 	overflow: hidden;
-	background-color: #FFEAF1;
+/*	background-color: #FFEAF1;*/
 	top: 0;
 	text-align: center
 }
@@ -61,6 +61,7 @@ h1 {
 	margin: 0 0;
 	width: 27px;
 	text-align: left;
+	margin-right: 50px
 }
 
 .title{
@@ -79,6 +80,15 @@ body {
 	background-color: #fff;
 }
 
+#arbitraryPatternInput {
+	width: 300px;
+	height: 26px;
+	font-size: 15px;
+	margin: auto 0;
+	vertical-align: middle;
+	font-family: Courier
+}
+
 .simple-buttons button {
 	padding: 6px 12px;
 	margin-bottom: 0;
@@ -88,7 +98,6 @@ body {
 	text-align: center;
 	white-space: nowrap;
 	vertical-align: middle;
-	cursor: pointer;
 	border: 1px solid transparent;
 	border-radius: 4px;
 }
@@ -107,7 +116,6 @@ body {
 	background-color: #68FCFF;
 	white-space: nowrap;
 	vertical-align: middle;
-	cursor: pointer;
 	border: 1px solid transparent;
 	border-radius: 4px;
 

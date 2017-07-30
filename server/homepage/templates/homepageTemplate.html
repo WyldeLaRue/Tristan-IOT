@@ -11,9 +11,8 @@
 
 		<title>Tristan IOT</title>
 
-		<!-- Bootstrap Core CSS -->
 		<link href="/public/css/homepage.css" rel="stylesheet">
-		<!-- Custom CSS -->
+		<link href="/public/css/buttons.css" rel="stylesheet">
 		<style>
 		body {
 				padding-top: 70px;
@@ -40,33 +39,54 @@
 
 		<div class="simple-buttons">
 				<p style = "text-align: center">
-				<button id='rainbow' style="background-color: cyan">Rainbow</button>
-				<button id='rainbowCycle' style="background-color: orange">Rainbow Cycle</button>
-				<button id='strobe' style="background-color: yellow">Strobe</button>
-				<button id='tbd' style="background-color: purple">TBD</button>
-				<button id='START' style="background-color: red">START</button>
+				<button id='rainbow' class="button-cyan">Rainbow</button>
+				<button id='rainbowCycle' class="button-yellow">Rainbow Cycle</button>
+				<button id='strobe' class="button-purple">Strobe</button>
+				<button id='tbd' class="button-green">TBD</button>
+				<button id='clearPatterns' class="button-red">STOP</button>
 				</p>
 		</div>
 		<div class=simple-buttons>
 				<p style="text-align: center">
-				<button id='debug' style="background-color: green">Ἀχιλῆος</button>
-				<button id='rainbowCycle' style="background-color: orange">Πηληϊάδεω</button>
-				<button id='strobe' style="background-color: yellow">οὐλομένην</button>
-				<button id='TBD' style="background-color: purple">ἐρίσαντε</button>
-				<button id='TBD' style="background-color: red">προΐαψεν</button>
+				<button id='debug' class="button-green">Ἀχιλῆος</button>
+				<button id='rainbowStrobe' class="button-purple">Rainbow Strobe</button>
+				<button id='strobe' class="button-pink">Πηληϊάδεω</button>
+				<button id='TBD' class="button-pink">ἐρίσαντε</button>
+				<button id='TBD' class="button-pink">προΐαψεν</button>
 				</p>
+		</div>
+		<div class=simple-buttons>
+			<div class=center>
+				<input type="text" id="arbitraryPatternInput">
+				<button id="arbitraryPatternSubmit" class="button-grey">Submit</button>
+			</div>
 		</div>
 		<table class="sliders">			
 			<tr>
 				<td>Speed</td>
 				<td><input id="speedSlider" type="range" min="0" max="100" step="1" data-orientation="horizontal"></td>
-				<td id="speedSliderValue" class="sliderValue">100</td>
+				<td id="speedSliderValue" class="sliderValue">50</td>
 			</tr>
 			<tr>
 				<td>Brightness</td>
 				<td><input id="brightnessSlider" type="range" min="0" max="100" step="1" data-orientation="horizontal"></td>
-				<td><div id="brightnessSliderValue" class="sliderValue">100</div></td>
+				<td><div id="brightnessSliderValue" class="sliderValue">50</div></td>
+			</tr>
+			<tr>
+				<td>Pattern Specific 1</td>
+				<td><input id="generic1" type="range" min="0" max="100" step="10" data-orientation="horizontal"></td>
+				<td><div id="generic1SliderValue" class="sliderValue">50</div></td>
 			</tr>		
+			<tr>
+				<td>Pattern Specific 2</td>
+				<td><input id="generic2" type="range" min="0" max="100" step="1" data-orientation="horizontal"></td>
+				<td><div id="generic2SliderValue" class="sliderValue">50</div></td>
+			</tr>		
+			<tr>
+				<td>Pattern Specific 3</td>
+				<td><input id="generic3" type="range" min="0" max="1000" step="1" data-orientation="horizontal"></td>
+				<td><div id="generic3SliderValue" class="sliderValue">500</div></td>
+			</tr>			
 		</table>
 
 		<table class=outletController>
@@ -91,17 +111,9 @@
 				<td><button id='outlet-5-off'>5 Off</button></td>
 			</tr>
 		</table>
-		<!-- /.row -->
-		<!-- /.container -->
 
-		<!-- jQuery Version 1.11.1 -->
 		<script src="/public/js/jquery.js"></script>
-
-		<!-- Bootstrap Core JavaScript -->
-		<script src="/public/js/bootstrap.min.js"></script>
-		<script src="/public/js/rangeslider.js"></script>
 		<script src="/public/js/homepage.js"></script>
 
 </body>
-
 </html>

@@ -1,7 +1,6 @@
 from server import app, testObject
 import server.lights as lights
 import server.patterns as patterns
-from server.patterns import rgbColor, hsvColor
 from flask import render_template, request
 import subprocess
 from server.tests import debugMain
@@ -11,12 +10,12 @@ def hello_world():
     testObject.color = "blue"
     testObject.value += 1
     print("hello")
-    return 'Hello, World!'
+    return "success"
 
 @app.route('/start')
 def start():
     pass
-    return "Created thread"
+    return "success"
 
 @app.route('/')
 def homepage():
@@ -27,11 +26,23 @@ def homepage():
 def debugPage():
     print('DEBUGGING:')
     debugMain()
+    return "success"
 
-
-@app.route('/api/lights/setPattern/<pattern>')
+@app.route('/api/lights/patterns/<pattern>')
 def setPattern(pattern):
-    return lights.addPattern(pattern)
+    print(pattern)
+    x = lights.addPattern(pattern)
+    print(x)
+    return "success"
+
+@app.route('/api/lights/clearPatterns')
+def clearPatterns():
+    print("suspending patterns")
+    lights.suspendAll()
+    print("turn off lights")
+    patterns.setAll(patterns.RGBColor(0,0,0))
+    patterns.strip.show()
+    return "success"
 
 @app.route('/api/lights/setAttribute', methods=['POST'])
 def setAttribute():
@@ -39,9 +50,11 @@ def setAttribute():
         value = request.form['value']
         attribute = request.form['attribute']
         if attribute == "brightness":
-            lc.setBrightness(float(value))
+            lights.setBrightness(float(value))
         elif attribute == "speed":
-            lc.setSpeed(float(value))
+            lights.setSpeed(float(value))
+        else:
+            lights.setAttribute(value, attribute)
         return "success"
 
 @app.route('/api/outlets/toggle', methods=['POST'])
@@ -64,9 +77,9 @@ def manageOutlets():
             signature = freqON[outletId]
             print(("Turning on " + outletId))
             subprocess.call(('/var/www/rfoutlet/codesend %d -l 180 -p 0' % signature), shell=True)
-            return "toggle success"
+            return "success"
         else:
             signature = freqOFF[outletId]
             print(("Turning off " + outletId))
             subprocess.call(('/var/www/rfoutlet/codesend %d -l 180 -p 0' % signature), shell=True)
-            return "toggle success"
+            return "success"
