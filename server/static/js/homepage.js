@@ -61,7 +61,30 @@ function helloFactory(string) {
 	};
 }
 
+function submitStaticColor() {
+	var red = document.getElementById("red").value;
+	var green = document.getElementById("green").value;
+	var blue = document.getElementById("blue").value;
+	var white = document.getElementById("white").value;
+	$.post("/api/lights/setStaticColor", {red: red, green: green, blue: blue, white: white});
+}
 
+
+function setAlarm(){
+	var time = document.getElementById("alarmInput").value;
+	$.post("/api/lights/alarm/set", {time: time});
+
+}
+
+function getAlarmStatus() {
+    $.post("/api/lights/alarm/status", function(result){
+        alert(result);
+    });
+}
+
+function cancelAlarm() {
+	$.post("/api/lights/alarm/cancel");
+}
 /*====================================
    		  Utility Functions 
 ====================================*/
@@ -76,16 +99,25 @@ function bindEvents() {
 	bindPatternById('rainbowCycle');
 	bindPatternById('strobe');
 	bindPatternById('rainbowStrobe');
-	bindPatternById('TBD');
+	bindPatternById('rainbowReversed');
+	bindPatternById('crawl');
 	var patternInput = document.getElementById('arbitraryPatternInput');
 	document.getElementById("arbitraryPatternSubmit").onclick = setPatternFromElement(patternInput);
 	patternInput.onkeypress = setPatternCarriageReturn(patternInput);
+	document.getElementById("rgbwSubmit").onclick = submitStaticColor;
 
 	document.getElementById("clearPatterns").onclick = getRequest("/api/lights/clearPatterns");
 	document.getElementById("debug").onclick = getRequest("/debug");
 
-	var speed = document.getElementById('speedSlider');
-	speed.oninput = setAttribute(speed, "speed");
+
+	document.getElementById("setAlarm").onclick = setAlarm;
+	document.getElementById("checkAlarm").onclick = getAlarmStatus;
+	document.getElementById("cancelAlarm").onclick = cancelAlarm;
+
+	var tickrate = document.getElementById('tickrateSlider');
+	tickrate.oninput = setAttribute(tickrate, "tickrate");
+	var ticksize = document.getElementById('ticksizeSlider');
+	ticksize.oninput = setAttribute(ticksize, "ticksize");
 	var brightness = document.getElementById('brightnessSlider');
 	brightness.oninput = setAttribute(brightness, "brightness");
 	var generic1 = document.getElementById('generic1');

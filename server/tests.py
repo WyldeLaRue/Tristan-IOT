@@ -5,7 +5,8 @@ from . import lights as lights
 def debugMain():
 	# print 'patternMap:', lights.patternMap
 	print('brightness:', shared.brightness.value)
-	print('speed:', shared.speed.value)
+	print('tickrate:', shared.tickrate.value)
+	print('tiocksize:', shared.ticksize.value)
 	print('generic1:', shared.generic1.value)
 	print('generic2:', shared.generic2.value)
 	print('generic3:', shared.generic3.value)

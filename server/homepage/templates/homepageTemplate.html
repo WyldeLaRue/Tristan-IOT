@@ -13,11 +13,16 @@
 
 		<link href="/public/css/homepage.css" rel="stylesheet">
 		<link href="/public/css/buttons.css" rel="stylesheet">
+<!-- 		<link href="/public/libraries/bootstrap-colorpicker/dist/css/bootstrap-colorpicker.css" rel="stylesheet">
+		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link href="/public/css/color.css" rel="stylesheet"> -->
+
+
 		<style>
-		body {
-				padding-top: 70px;
-				/* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-		}
+			body {
+					padding-top: 70px;
+					/* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
+			}
 		</style>
 
 </head>
@@ -42,7 +47,7 @@
 				<button id='rainbow' class="button-cyan">Rainbow</button>
 				<button id='rainbowCycle' class="button-yellow">Rainbow Cycle</button>
 				<button id='strobe' class="button-purple">Strobe</button>
-				<button id='tbd' class="button-green">TBD</button>
+				<button id='rainbowReversed' class="button-green">Rainbow Expansion</button>
 				<button id='clearPatterns' class="button-red">STOP</button>
 				</p>
 		</div>
@@ -50,8 +55,8 @@
 				<p style="text-align: center">
 				<button id='debug' class="button-green">Ἀχιλῆος</button>
 				<button id='rainbowStrobe' class="button-purple">Rainbow Strobe</button>
-				<button id='strobe' class="button-pink">Πηληϊάδεω</button>
-				<button id='TBD' class="button-pink">ἐρίσαντε</button>
+				<button id='crawl' class="button-cyan">Color Crawl</button>
+				<button id='TBD' class="button-pink">αψεπρο</button>
 				<button id='TBD' class="button-pink">προΐαψεν</button>
 				</p>
 		</div>
@@ -64,8 +69,13 @@
 		<table class="sliders">			
 			<tr>
 				<td>Speed</td>
-				<td><input id="speedSlider" type="range" min="0" max="100" step="1" data-orientation="horizontal"></td>
-				<td id="speedSliderValue" class="sliderValue">50</td>
+				<td><input id="tickrateSlider" type="range" min="0" max="100" step="1" data-orientation="horizontal"></td>
+				<td id="tickrateSliderValue" class="sliderValue">50</td>
+			</tr>
+			<tr>
+				<td>ticksize</td>
+				<td><input id="ticksizeSlider" type="range" min="-5" max="5" step="1" data-orientation="horizontal"></td>
+				<td id="ticksizeSliderValue" class="sliderValue">1</td>
 			</tr>
 			<tr>
 				<td>Brightness</td>
@@ -74,7 +84,7 @@
 			</tr>
 			<tr>
 				<td>Pattern Specific 1</td>
-				<td><input id="generic1" type="range" min="0" max="100" step="10" data-orientation="horizontal"></td>
+				<td><input id="generic1" type="range" min="0" max="100" step="1" data-orientation="horizontal"></td>
 				<td><div id="generic1SliderValue" class="sliderValue">50</div></td>
 			</tr>		
 			<tr>
@@ -88,6 +98,30 @@
 				<td><div id="generic3SliderValue" class="sliderValue">500</div></td>
 			</tr>			
 		</table>
+		<div class=simple-buttons>
+			<div class=center>
+				<input type="text" id="red" class="rgbwInput">
+				<input type="text" id="green" class="rgbwInput">
+				<input type="text" id="blue" class="rgbwInput">
+				<input type="text" id="white" class="rgbwInput">
+				<button id="rgbwSubmit" class="button-grey">Submit</button>
+			</div>
+		</div>
+
+		<div class=simple-buttons>
+			<div class=center>
+				<input type="text" id="alarmInput" class="rgbwInput">
+				<button id="setAlarm" class="button-grey">Set Alarm</button>
+				<button id="checkAlarm" class="button-purple">Get Alarm Status</button>
+				<button id="cancelAlarm" class="button-red">Cancel Alarm</button>
+			</div>
+		</div>
+
+		<!-- <div id="cp1" data-color="#305AA2"></div> -->
+<input value="ffcc00" width=0px class="jscolor {mode:'HS', width:300, height:150, padding:0, shadow:false,
+    borderWidth:0, backgroundColor:'transparent', insetColor:'#FFFFFF'}">
+
+
 
 		<table class=outletController>
 			<tr>
@@ -111,9 +145,16 @@
 				<td><button id='outlet-5-off'>5 Off</button></td>
 			</tr>
 		</table>
+		<input class="jscolor" value="ab2567">
+		<input class="jscolor" value="ab2567">
 
 		<script src="/public/js/jquery.js"></script>
 		<script src="/public/js/homepage.js"></script>
+		<script src="/public/js/jscolor.js"></script>
+<!-- 		<script src="//code.jquery.com/jquery-3.2.1.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="/public/libraries/bootstrap-colorpicker/dist/js/bootstrap-colorpicker.js"></script>
+		<script src="public/js/color.js"></script> -->
 
 </body>
 </html>

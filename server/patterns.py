@@ -36,6 +36,31 @@ def wheel(pos):
 		pos -= 170
 		return RGBColor(0, pos * 3, 255 - pos * 3)
 
+def	nuWheel(n):
+	n = int(round(n))
+	cycle = (n // 256) % 6
+	n = n % 256
+	if cycle == 0:
+		red, green, blue = (255, 255-n, 0)
+	elif cycle == 1:
+		red, green, blue = (255, 0, n)
+	elif cycle == 2:
+		red, green, blue = (255-n, 0, 255)
+	elif cycle == 3:
+		red, green, blue = (0, n, 255)
+	elif cycle == 4:
+		red, green, blue = (0, 255, 255-n)
+	elif cycle == 5:
+		if 1.1 * n < 255:
+			red, green, blue = (int(1.1*n), 255, 0)
+		else:
+			red, green, blue = (255, 255, 0)
+
+	return RGBColor(red, green, blue)
+
+
+
+
 def rainbowSurjection(hue):
 	return HSVColor(hue, 1, 1)
 
@@ -43,7 +68,7 @@ def rainbowSurjection2(hue):
 	return HSVColor(hue**2, 1, 1)
 
 def setAll(color):
-	for i in range(strip.numPixels()):
+	for i in range(300):
 		strip.setPixelColor(i, color)
 
 def randomColor():
@@ -61,7 +86,9 @@ def RGBColor(red, green, blue, white=0):
 # 0-1 for hue, 0-1 for saturation, 0-1 for value, 0-1 for white
 def HSVColor(hue, saturation, value, white=0):
 	red, green, blue = colorsys.hsv_to_rgb(hue, saturation, value)
+	# print((hue, saturation, value), '-->', (255*red, 255*green, 255*blue))
 	return RGBColor(255*red, 255*green, 255*blue, white)
+
 
 
 
@@ -70,16 +97,17 @@ def HSVColor(hue, saturation, value, white=0):
 # ========================== #
 #		   Patterns			 #
 # ========================== #
-def rainbow(strip=strip, wait_ms=100, num_colors=360):
+def rainbow(x=1, y=2):
 	maxSpeed = 2
 	minSpeed = 200
 	
-	for j in range(256):
+	for j in range(256*6):
 		for i in range(strip.numPixels()):
-			strip.setPixelColor(i, wheel(int(j) & 255))
+			strip.setPixelColor(i, nuWheel(j))
 		strip.show()
-		wait = (1-shared.speed.value/100.0)*minSpeed + maxSpeed
+		wait = (1-shared.tickrate.value/100.0)*minSpeed + maxSpeed
 		time.sleep(wait/1000)
+
 
 def rainbowFix(strip=strip):
 	maxSpeed = 2
@@ -90,64 +118,218 @@ def rainbowFix(strip=strip):
 			strip.setPixelColor(i, rainbowSurjection2((j/360.0)))
 		strip.show()
 
-		wait = (1-shared.speed.value/100.0)*minSpeed + maxSpeed
+		wait = (1-shared.tickrate.value/100.0)*minSpeed + maxSpeed
 		time.sleep(wait/1000)
 
 def rainbowCycle(wait_ms=20, iterations=5):
 	maxSpeed = 20
 	minSpeed = 200
-	for j in range(256*iterations):
+	for j in range(300):
 		for i in range(strip.numPixels()):
-			strip.setPixelColor(i, wheel(int((i * 256 / strip.numPixels()) + j) & 255))
+			strip.setPixelColor(i, nuWheel(5.12*(i+j)))
 		strip.show()
-		wait = (1-shared.speed.value/100.0)*(minSpeed-maxSpeed) + maxSpeed
+		wait = (1-shared.tickrate.value/100.0)*(minSpeed-maxSpeed) + maxSpeed
 		time.sleep(wait/1000)
 
-def rainbowStrobe(wait_ms=20, iterations=100):
-	maxSpeed = 10
-	minSpeed = 400
 
-	for j in range(iterations):
+def rainbowReversed():
+	while True:
+		period = 500
+		for t in range(-period, period):
+			for pixel in range(strip.numPixels()):
+				strip.setPixelColor(pixel, nuWheel((0.07*pixel*t)))
+			strip.show()
+			wait = (1-shared.tickrate.value/100.0)*(250) + 5
+			time.sleep(wait/1000)
+		for t in range(period, -period, -1):
+			for pixel in range(strip.numPixels()):
+				strip.setPixelColor(pixel, nuWheel((0.07*pixel*t)))
+			strip.show()
+			wait = (1-shared.tickrate.value/100.0)*(250) + 5
+			time.sleep(wait/1000)
+
+def rainbowExpansion():
+	t = 0
+	while True:
+		for pixel in range(strip.numPixels()):
+			strip.setPixelColor(pixel, nuWheel(5.12*(pixel*t)))
+		strip.show()
+		t += shared.ticksize.value
+		wait = (1-shared.tickrate.value/100.0)*(390) + 10
+		time.sleep(wait/1000)
+
+def rainbowStrobe():
+	maxSpeed = 10
+	minSpeed = 600
+
+	for j in range(10000):
 		setAll(randomColor())
 		strip.show()
-		time.sleep(30/1000)
+		time.sleep(100/1000)
 		setAll(RGBColor(0,0,0))
 		strip.show()
-		wait = (1-shared.speed.value/100.0)*(minSpeed-maxSpeed) + maxSpeed
+		wait = (1-shared.tickrate.value/100.0)*(minSpeed-maxSpeed) + maxSpeed
 		time.sleep(wait/1000)
 
-def strobe(wait_ms=20, iterations=100):
+def strobe(wait_ms=20):
 	maxSpeed = 10
-	minSpeed = 400
+	minSpeed = 600
 
-	for j in range(iterations):
+	for j in range(10000):
 		setAll(RGBColor(0,0,0,255))
 		strip.show()
 		time.sleep(30/1000)
 		setAll(RGBColor(0,0,0))
 		strip.show()
-		wait = (1-shared.speed.value/100.0)*(minSpeed-maxSpeed) + maxSpeed
+		wait = (1-shared.tickrate.value/100.0)*(minSpeed-maxSpeed) + maxSpeed
 		time.sleep(wait/1000)
 
+def static():
+	for j in range(1000):
+		setAll(RGBColor(0,0,0,255))
+		strip.show()
+		time.sleep(0.5)
+
+
+def alarm():
+	DURATION = 10
+	duration_seconds = DURATION * 60
+	wait = duration_seconds/255.0
+	for brightness in range(255):
+		setAll(RGBColor(0, 0, 0, brightness + 1))
+		strip.show()
+		time.sleep(wait)
+
+################################################################################################################################
+#		EXPERIMENTAL PATTERNS
+################################################################################################################################
 def wavetest(iterations=100000):
 	i = 100
-	# f = lambda x: math.cos((2*math.pi/40)*x)
-	# for k in range(0, 11):
-	# 	print(k, '-->', f(k))
-	f = lambda x, test: 1 - (x/10)**test 
+	#f = lambda x, test: math.cos((2*math.pi/40)*x)
+	#f = lambda x, test: 1 - (x/20)**test 
+	f = lambda x, test: (1.0 / (1 + (0.35*x)**2))
+	black = RGBColor(0,0,0)
 	while True:
 		i = (i + 1) % 300
-		setAll(RGBColor(0,0,0))
-		for k in range(0, 11):
-			testvar = shared.generic2.value/10.0 
-			value = f(k, testvar)
-			strip.setPixelColor(i+k, HSVColor(0.5, 1, value))
-			strip.setPixelColor(i-k, HSVColor(0.5, 1, value))
-		strip.show()
+		strip.setPixelColor(i-1, black)
+		for j in range(10):
+			dec = j/10.0
+			for k in range(0, 23):
+				testvar = shared.generic2.value/100.0 
+				value = f(k+j, testvar)
+			strip.setPixelColor(int(i+k+j), HSVColor(0, 1, value))
+				#strip.setPixelColor(i-k, HSVColor(0.5, 1, value))
+			strip.show()
 
-		wait = (1-shared.speed.value/100.0)*(390) + 10 
+		wait = (1-shared.tickrate.value/100.0)*(390) + 10 
 		time.sleep(wait/1000)
 
+
+def sintest(iterations=100000):
+	def f(x, t):
+		arg = 2*math.pi * (x - t/30.0) / 30.0 
+		return 0.5 * math.sin(arg) + 0.5
+	t = 0
+	color1 = (255, 0, 0)
+	color2 = (0, 0, 255)
+	while True:
+		t += 10
+		for x in range(300):
+			ratio = f(x, t)
+			red, blue, green = colorMix(color1, color2, ratio)
+			color = RGBColor(red, blue, green)
+			strip.setPixelColor(x, color)
+		strip.show()
+		wait = (1-shared.tickrate.value/100.0)*(390) + 10 
+		time.sleep(wait/1000)
+
+def warmSinTest(iterations=100000):
+	def f(x, t):
+		arg = 2*math.pi * (x - t/30.0) / 30.0 
+		return 0.5 * math.sin(arg) + 0.5
+	t = 0
+	while True:
+		t += 10
+		for x in range(300):
+			ratio = f(x, t)
+			color = RGBColor(0, 0, 0, ratio*255)
+			strip.setPixelColor(x, color)
+		strip.show()
+		wait = (1-shared.tickrate.value/100.0)*(390) + 10 
+		time.sleep(wait/1000)
+
+
+def brightnessTest():
+	print('===================')
+	for i in range(300):
+		strip.setPixelColor(i, RGBColor(0,0,0))
+	for i in range(256):
+		strip.setPixelColor(i+30, RGBColor(0, 0, i, debug=True))
+	strip.show()
+	wait = (1-shared.tickrate.value/100.0)*(390) + 10
+	print('####################')
+	time.sleep(10)
+
+
+# ==============
+def colorMix(color1, color2, ratio):
+	inverse = 1-ratio
+	red1, green1, blue1 = color1
+	red2, green2, blue2 = color2
+
+	red = red1*inverse + red2*ratio
+	green = green1*inverse + green2*ratio
+	blue = blue1*inverse + blue2*ratio
+	return (red, green, blue)
+
+def paletteMap(ratio, color1, color2, color3, color4):
+	colors = (color1, color2, color3, color4)
+	box = ratio * 3
+	pos = box - math.floor(box)
+	floorBox = math.floor(box)
+	return colorMix(colors[floorBox],colors[(floorBox+1) % 4],pos)
+	#box ranges from 0- 3
+	#1, 2/3, 1/3, 0
+	if ratio < 0.33:
+		return colorMix(color2, color1)
+	elif ratio < 0.66:
+		return colorMix(color3, color2)
+	else:
+		return colorMix(color4, color3)
+
+def crawlHelper(x,t):
+
+	#sarina pallete
+	# purple (205, 0, 242)
+	# orange (255, 100, 0)
+	main1 = (0, 0, 255)
+	secondary1 = (0, 180, 180)
+	secondary2 = (220, 150, 0)
+	main2 = (255, 0, 0)
+	length = 300
+	frames = 30
+	mul = 1
+	offset = math.sin(2*math.pi*x/length*2)
+	index = (t/frames) + (x/length) + offset
+	inverse = 0.5*math.cos(math.pi + ((index*2*math.pi)*mul))+0.5
+	return paletteMap(1-inverse, main1, secondary1, secondary2, main2)
+
+
+def crawl():
+	t = 0
+	while True:
+		for pixel in range(strip.numPixels()):
+			red, blue, green = crawlHelper(pixel,t)
+			strip.setPixelColor(pixel, RGBColor(red, blue, green))
+		strip.show()
+		t += shared.ticksize.value
+		wait = (1-shared.tickrate.value/100.0)*(390) + 10
+		time.sleep(wait/1000)
+
+# ===========
+################################################################################
+		# OLD PATTERNS
+################################################################################
 def colorWipe(wait_ms=50):
 	this = theaterChase
 	for i in range(strip.numPixels()):
@@ -160,7 +342,6 @@ def colorWipe(wait_ms=50):
 			return
 
 def theaterChase(controller, wait_ms=50, iterations=10):
-	this = theaterChase
 	for j in range(iterations):
 		for q in range(3):
 			for i in range(0, strip.numPixels(), 3):
@@ -170,16 +351,12 @@ def theaterChase(controller, wait_ms=50, iterations=10):
 			for i in range(0, strip.numPixels(), 3):
 				strip.setPixelColor(i+q, 0)
 
-def theaterChaseRainbow(controller, wait_ms=50):
-	this = theaterChaseRainbow
+def theaterChaseRainbow(wait_ms=50):
 	"""Rainbow movie theater light style chaser animation."""
 	for j in range(256):
 		for q in range(3):
 			for i in range(0, strip.numPixels(), 3):
-				if statusCheck(this, controller):
-					strip.setPixelColor(i, wheel(((i * 256 / strip.numPixels()) + j) & 255))
-				else:
-					return
+					strip.setPixelColor(i, wheel(int((i * 256 / strip.numPixels()) + j) & 255))
 			strip.show()
 			time.sleep(wait_ms/1000.0)
 			for i in range(0, strip.numPixels(), 3):

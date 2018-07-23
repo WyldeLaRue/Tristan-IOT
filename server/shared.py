@@ -17,8 +17,15 @@ class Counter(object):
     def value(self):
         return self.val.value
 
-speed = Counter()
+tickrate = Counter()
+ticksize = Counter()
 brightness = Counter()
 generic1 = Counter()
 generic2 = Counter()
 generic3 = Counter()
+
+alarm_duration = Counter()
+
+alarm_duration.set(10)
+ticksize.set(1)
+generic3.set(500)

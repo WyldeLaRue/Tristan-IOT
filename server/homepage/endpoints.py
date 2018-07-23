@@ -1,5 +1,6 @@
 from server import app, testObject
 import server.lights as lights
+from server.alarm import alarm
 import server.patterns as patterns
 from flask import render_template, request
 import subprocess
@@ -25,7 +26,7 @@ def homepage():
 @app.route('/debug')
 def debugPage():
     print('DEBUGGING:')
-    debugMain()
+    lights.alarm_fire()
     return "success"
 
 @app.route('/api/lights/patterns/<pattern>')
@@ -44,18 +45,48 @@ def clearPatterns():
     patterns.strip.show()
     return "success"
 
+@app.route('/api/lights/setStaticColor', methods=['POST'])
+def setStaticColor():
+    lights.suspendAll()
+    red = int(request.form['red'])
+    green = int(request.form['green'])
+    blue = int(request.form['blue'])
+    white = int(request.form['white'])
+
+    print("set static:", (red, green, blue, white))
+    patterns.setAll(patterns.RGBColor(red,green,blue,white))
+    patterns.strip.show()
+    return "success"
+
 @app.route('/api/lights/setAttribute', methods=['POST'])
 def setAttribute():
     if request.method == 'POST':
         value = request.form['value']
         attribute = request.form['attribute']
-        if attribute == "brightness":
-            lights.setBrightness(float(value))
-        elif attribute == "speed":
-            lights.setSpeed(float(value))
-        else:
-            lights.setAttribute(value, attribute)
+        lights.setAttribute(value, attribute)
         return "success"
+
+
+@app.route('/api/lights/alarm/<alarmRequest>', methods=["POST"])
+def handleAlarmRequest(alarmRequest):
+    if alarmRequest == "set":
+        unformatted_time = request.form['time']
+        formatted = unformatted_time.split(":")
+        fire_time = (int(formatted[0]), int(formatted[1]))
+        alarm.setAlarm(fire_time, lights.alarm_fire)
+        return "success"        
+    elif alarmRequest == "status":
+        if not alarm.alarm.is_alive():
+            alarm.cancelAlarm()
+            return "No Alarm Set"
+        else: 
+            return alarm.alarmTarget
+    elif alarmRequest == "cancel":
+        alarm.cancelAlarm()
+        return "success"
+
+
+
 
 @app.route('/api/outlets/toggle', methods=['POST'])
 def manageOutlets():

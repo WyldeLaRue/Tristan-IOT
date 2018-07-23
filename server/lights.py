@@ -1,9 +1,11 @@
 import time
 from . import patterns
+from .alarm import alarm
 import os
 import signal
 from multiprocessing import Process
 from . import shared
+import subprocess
 
 enabledPatterns = ["rainbow", "rainbowCycle"]
 patternMap = {}
@@ -81,6 +83,7 @@ def patternloop(patternFunc, patternId):
 	while True:
 		patternFunc()
 
+
 def setAttribute(value, attribute):
 	getattr(shared, attribute).set(int(value))	
 
@@ -98,3 +101,15 @@ def setSpeed(speed):
 	else:
 		print("speed out of bounds")
 		
+
+def alarm_fire():
+	print("FIRING =======")
+	alarm.cancelAlarm()
+	suspendAll()
+	patterns.setAll(patterns.RGBColor(0,0,0))
+	patterns.strip.show()
+
+	# Turn outlet ON
+	subprocess.call('/var/www/rfoutlet/codesend 87347 -l 180 -p 0', shell=True)
+	patterns.alarm()
+
